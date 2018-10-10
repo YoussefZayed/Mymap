@@ -11,29 +11,24 @@ and Google's Maps API Course, Lesson 2 -->
 </head>
 
 <body>
-<div class="container">
-    <nav >
-        <h1>
-            Youssef's Map
-        </h1>
-        <div>
-            <div class="search-box-container">
-				<input class="search-box" type="text" data-bind="textInput: query, event: {keyup:search}" placeholder="Search">
-			</div>
-			<ul class="location-list" data-bind="foreach: locationList">
-				<li class="location-list-item" data-bind="click: $parent.selectFromList">
-					<div class="location-title" data-bind="text: name"></div>
-					<div class="location-address" data-bind="text: address"></div>
-					</ul>
-				</li>
-			</ul>
-    </nav>
-    <div id="map" class="mainview"></div>
-</div>
-    <script src="knockout-3.2.0.js"></script>
+    <div class="container">
+        <nav>
+            <h1>
+                Yousef's Map
+            </h1>
+          
+                <ul data-bind="foreach: locations">
+                    <li data-bind="click: $parent.clicked">
+                        <div  data-bind="text: name"></div>
+                        <div  data-bind="text: address"></div></li>
+                </ul>
+        </nav>
+        <div id="map" class="mainview"></div>
+    </div>
+    <script src="knockout-3.3.0.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDLL4XMs8WS0DOfbR_PmDrGoFL2ZehCUZI">
     </script>
-    
+
     <script src="mapping.js"></script>
 </body>
 

@@ -1,102 +1,129 @@
 
 var places = [
-  {
-      name: 'Old Quarry Trail',
-      address: 'Eagleson Rd, Kanata, ON K2M 1A9',
-      selected: false,
-      infowindow: 'Good place to go for a hike!',
-      latlng: {lat :45.299958, lng : -75.874278},
-      marker: '',
-      infowindow: '',
-      wiki: ''
+    {
+        name: 'Rideau Canal',
+        address: 'Ottawa, ON',
+        selected: false,
+        latlng: { lat: 45.299958, lng: -75.874278 },
+        marker: '',
+        infowindow: '',
+        wikiinfo: ''
     },
 
-  {
-      name: 'Market Square',
-      address: '457 Hazeldean Rd, Kanata, ON K2L 3P3',
-      selected: false,
-      infowindow: 'Good place to go for shopping!',
-      latlng: {lat :45.300226,lng: -75.886980},
-      marker: '',
-      infowindow: '',
-      wiki: ''
-  },
- 
-  {
-      name: 'Kanata Centrum Shopping Centre',
-      address: '130 Earl Grey Dr, Kanata, ON',
-      selected: false,
-      infowindow: 'Good place to go and hang out with friends!',
-      latlng: {lat :45.309880, lng:-75.913814},
-      marker: '',
-      infowindow: '',
-      wiki: ''
+    {
+        name: 'ByWard Market',
+        address: 'Ottawa, ON',
+        selected: false,
+        latlng: { lat: 45.429313,lng: -75.689535},
+        marker: '',
+        infowindow: '',
+        wikiinfo: ''
+    },
 
-  },
+    {
+        name: 'Kanata',
+        address: 'Ontario, Canada',
+        selected: false,
+        latlng: { lat: 45.309880, lng: -75.913814 },
+        marker: '',
+        infowindow: '',
+        wikiinfo: ''
 
-  {
-      name: 'The Loft Board Game Lounge',
-      address: '14 Waller St, Ottawa, ON K1N 9C4',
-      selected: false,
-      infowindow: 'Good place to go for playing board games!',
-      latlng: {lat :45.427266,lng: -75.688753},
-      marker: '',
-      infowindow: '',
-      wiki: ''
+    },
 
-  },
+    {
+        name: 'IKEA Ottawa',
+        address: '2685 Iris St, Ottawa, ON K2C 3S4',
+        selected: false,
+        latlng: { lat:45.351272,lng: -75.783590},
+        marker: '',
+        infowindow: '',
+        wikiinfo: ''
+
+    },
 
 
 ];
 
-var location = function (data) {
-  this.name = ko.observable(data.name);
-  this.address = ko.observable(data.address);
-  this.selected = ko.observable(data.selected);
-  this.infowindow = ko.observable(data.infowindow);
-  this.marker = ko.observable(data.marker);
-  this.wiki = ko.observable(data.wiki);
+var Location = function (data) {
+    this.name = ko.observable(data.name);
+    this.address = ko.observable(data.address);
+    this.selected = ko.observable(data.selected);
+    this.marker = ko.observable(data.marker);
+    this.latlng = ko.observable(data.latlng);
+    this.infowindow = ko.observable(data.infowindow);
+    this.wikiinfo = ko.observable(data.wikiinfo);
 };
 
 
 
 
+var viewModel = function () {
+    this.locations = ko.observableArray([]);
+    var that = this;
+    function startup(){
 
-  var viewModel =function(){
-    this.locations =ko.observable(ko.observableArray([]));
+        for(var i=0; i<places.length;i++){
+            that.locations.push(new Location(places[i]));
+        }
+        initMap();
+
+    }
     
     
-
+    
+    
     function initMap() {
         canvas = document.getElementById('map');
-        settings ={
+        settings = {
             zoom: 12,
-            center: {lat: 45.4215 , lng:  -75.6972},
-          };
-        var map = new google.maps.Map(canvas,settings);
-        var bounds =new google.maps.LatLngBounds();
-        
-        for (place of places){
-        var marker = new google.maps.Marker({
-            position: place["latlng"],
-            map: map,
-            title: place["name"],
-            animation: google.maps.Animation.DROP
-        });
-    
-        var infowindow = new google.maps.InfoWindow({
-            content: "This is an info marker!"
-        });
-        marker.addListener('click',function(){
-            infowindow.open(map,marker);
-        });
-        bounds.extend(marker.position);
-        map.fitBounds(bounds);
+            center: { lat: 45.4215, lng: -75.6972 },
+        };
+        var map = new google.maps.Map(canvas, settings);
+        var bounds = new google.maps.LatLngBounds();
+
+        for (var i=0; i<that.locations().length;i++) {
+            var marker = new google.maps.Marker({
+                position: that.locations()[i].latlng(),
+                map: map,
+                title: that.locations()[i].name(),
+                animation: google.maps.Animation.DROP
+            });
+            that.markerclickes(that.locations()[i],marker)
+            that.locations()[i].marker(marker);
+           
+            that.locations()[i].infowindow(new google.maps.InfoWindow({
+                content: "This is an info marker!"
+            }));
+           
+            bounds.extend(that.locations()[i].marker().position);
+            map.fitBounds(bounds);
         }
-      };
+    };
+    
+    this.markerclickes = function(place,marker){
+        marker.addListener('click', function() {
+            that.clicked(place);
+        });
 
-    initMap();
+    }
+    this.clicked = function(place){
+        for (var i=0; i<that.locations().length;i++){
 
-  };
- 
-  ko.applyBindings(new viewModel());
+            that.locations()[i].selected(false);
+            that.locations()[i].infowindow().close(map,that.locations()[i].marker());
+
+        }
+        place.selected(true);
+        place.infowindow().open(map, place.marker());
+      
+        
+    }
+    
+    startup();
+
+
+    
+};
+
+ko.applyBindings(new viewModel());
