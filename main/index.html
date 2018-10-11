@@ -16,9 +16,11 @@ and Google's Maps API Course, Lesson 2 -->
             <h1>
                 Yousef's Map
             </h1>
-          
+            <div>
+				<input class="searchBar" type="text" data-bind="textInput: searchRequest, event: {keyup:search}" placeholder="Look up a place">
+			</div>
                 <ul data-bind="foreach: locations">
-                    <li data-bind="click: $parent.clicked">
+                    <li class = 'place' data-bind="click: $parent.clicked">
                         <div  data-bind="text: name"></div>
                         <div  data-bind="text: address"></div></li>
                 </ul>

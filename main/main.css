@@ -20,9 +20,10 @@
       nav{
         -webkit-text-fill-color: aliceblue;
         height: 100%;
-        text-align: left;
+        text-align: center;
         width: 25%;
         font-size: 1.5em;
+        overflow: auto;
 
       }
       .container{
@@ -40,5 +41,14 @@
         background-color: #4a8fd1;
 	      color: #fff;
       }
+      input.searchBar{
+        background-color:#000000;
+        color:white;
+        width: 90%;
+      }
+      .hide{
+       display: none;
+      }
+
      
      

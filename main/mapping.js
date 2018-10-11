@@ -3,7 +3,6 @@ var places = [
     {
         name: 'Rideau Canal',
         address: 'Ottawa, ON',
-        selected: false,
         latlng: { lat: 45.299958, lng: -75.874278 },
         marker: '',
         infowindow: '',
@@ -13,7 +12,6 @@ var places = [
     {
         name: 'ByWard Market',
         address: 'Ottawa, ON',
-        selected: false,
         latlng: { lat: 45.429313,lng: -75.689535},
         marker: '',
         infowindow: '',
@@ -23,7 +21,6 @@ var places = [
     {
         name: 'Kanata',
         address: 'Ontario, Canada',
-        selected: false,
         latlng: { lat: 45.309880, lng: -75.913814 },
         marker: '',
         infowindow: '',
@@ -34,7 +31,6 @@ var places = [
     {
         name: 'IKEA Ottawa',
         address: '2685 Iris St, Ottawa, ON K2C 3S4',
-        selected: false,
         latlng: { lat:45.351272,lng: -75.783590},
         marker: '',
         infowindow: '',
@@ -48,7 +44,6 @@ var places = [
 var Location = function (data) {
     this.name = ko.observable(data.name);
     this.address = ko.observable(data.address);
-    this.selected = ko.observable(data.selected);
     this.marker = ko.observable(data.marker);
     this.latlng = ko.observable(data.latlng);
     this.infowindow = ko.observable(data.infowindow);
@@ -60,7 +55,9 @@ var Location = function (data) {
 
 var viewModel = function () {
     this.locations = ko.observableArray([]);
+    this.searchRequest = ko.observable('');
     var that = this;
+
     function startup(){
 
         for(var i=0; i<places.length;i++){
@@ -110,15 +107,38 @@ var viewModel = function () {
     this.clicked = function(place){
         for (var i=0; i<that.locations().length;i++){
 
-            that.locations()[i].selected(false);
+            
             that.locations()[i].infowindow().close(map,that.locations()[i].marker());
 
         }
-        place.selected(true);
+        
         place.infowindow().open(map, place.marker());
       
         
     }
+    this.search = function(){
+        if(that.searchRequest()== ''){
+            for (var i=0; i<that.locations().length;i++){
+            var currentPlace = document.getElementsByClassName('place');
+            currentPlace[i].className= 'place';
+            that.locations()[i].marker().setVisible(true);
+            }
+        }else{
+            for (var i=0; i<that.locations().length;i++){
+                var currentPlace = document.getElementsByClassName('place');
+                currentPlace[i].className= 'place';
+                that.locations()[i].marker().setVisible(true);
+                }
+            for (var i=0; i<that.locations().length;i++){
+            if(that.locations()[i].name().toLowerCase().search(that.searchRequest().toLowerCase()) == -1){
+            var currentPlace = document.getElementsByClassName('place');
+            currentPlace[i].className= 'place hide';
+            that.locations()[i].marker().setVisible(false);
+            that.locations()[i].infowindow().close(map,that.locations()[i].marker());
+            }
+        }
+    }
+    }    
     
     startup();
 
