@@ -7,23 +7,24 @@
         padding: 0;
       }
       #map {
-        bottom:0px;
+        width: 75%;
         height: 100%;
-        left: 25%;
-        position: absolute;
-        right: 0px;
+        
+        float: right;
+        
       }
      h1{
         text-align: center;
         font-size: 2.3em;
      }
       nav{
-        -webkit-text-fill-color: aliceblue;
         height: 100%;
         text-align: center;
         width: 25%;
         font-size: 1.5em;
         overflow: auto;
+        vertical-align: top;
+        float: left;
 
       }
       .container{
@@ -46,8 +47,37 @@
         color:white;
         width: 90%;
       }
+      .wiki{
+        font-size: 1.1em;
+        max-height: 300px;
+        max-width: 300px;
+      }
       .hide{
        display: none;
+      }
+      @media (max-width: 800px){
+        #map {
+          width: 100%;
+          height: 60%;
+          float: right;
+          
+        }
+        nav{
+          height: 40%;
+          text-align: center;
+          width: 100%;
+          font-size: 1em;
+          overflow: auto;
+          vertical-align: top;
+          float: left;
+  
+        }
+        .wiki{
+          font-size: 1.1em;
+          max-height: 150px;
+          max-width: 200px;
+        }
+       
       }
 
      

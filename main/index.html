@@ -11,7 +11,8 @@ and Google's Maps API Course, Lesson 2 -->
 </head>
 
 <body>
-    <div class="container">
+    
+    <div id="map" class="mainview"></div>
         <nav>
             <h1>
                 Yousef's Map
@@ -25,8 +26,8 @@ and Google's Maps API Course, Lesson 2 -->
                         <div  data-bind="text: address"></div></li>
                 </ul>
         </nav>
-        <div id="map" class="mainview"></div>
-    </div>
+   
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="knockout-3.3.0.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDLL4XMs8WS0DOfbR_PmDrGoFL2ZehCUZI">
     </script>

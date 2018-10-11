@@ -31,7 +31,7 @@ var places = [
     },
 
     {
-        name: 'IKEA Ottawa',
+        name: 'IKEA',
         address: '2685 Iris St, Ottawa, ON K2C 3S4',
         latlng: { lat:45.351272,lng: -75.783590},
         marker: '',
@@ -65,12 +65,46 @@ var viewModel = function () {
         for(var i=0; i<places.length;i++){
             that.locations.push(new Location(places[i]));
         }
+        
         initMap();
+        that.getInfoBoxInfo();
 
     }
     
     
     
+    this.getInfoBoxInfo = function() {
+		
+
+		var wikiRequestTimeout = setTimeout(function() {
+			for(var i=0; i<that.locations().length; i++) {
+				that.locations()[i].wikiinfo(' An error occured' );
+			}
+		}, 1000);
+
+		for(var i=0; i<that.locations().length; i++) {
+			var wikiSearch = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + that.locations()[i].name() + '&srproperties=snippet&format=json&callback=wikiCallback';
+
+			$.ajax({url: wikiSearch,
+				dataType:'jsonp',
+				success: function(data) {
+					for(var i=0; i<that.locations().length; i++) {
+						if(data[1][0] == that.locations()[i].name()) {
+                            that.locations()[i].wikiinfo(data[2][0]);
+                            that.locations()[i].infowindow(new google.maps.InfoWindow({
+                                content: '<div class ="wiki">'+that.locations()[i].wikiinfo()+'</div>',
+                                
+                            }));
+						}
+					}
+
+					clearTimeout(wikiRequestTimeout);
+				}
+			});
+		}
+		
+
+    };
     
     function initMap() {
         canvas = document.getElementById('map');
@@ -90,9 +124,8 @@ var viewModel = function () {
             });
             that.markerclickes(that.locations()[i],marker)
             that.locations()[i].marker(marker);
-           
             that.locations()[i].infowindow(new google.maps.InfoWindow({
-                content: "This is an info marker!"
+                content: "This is an error"
             }));
            
             bounds.extend(that.locations()[i].marker().position);
