@@ -3,7 +3,9 @@ var places = [
     {
         name: 'Rideau Canal',
         address: 'Ottawa, ON',
-        latlng: { lat: 45.299958, lng: -75.874278 },
+
+        latlng: { lat: 45.368630,lng: -75.696649 },
+
         marker: '',
         infowindow: '',
         wikiinfo: ''
@@ -109,9 +111,12 @@ var viewModel = function () {
 
             
             that.locations()[i].infowindow().close(map,that.locations()[i].marker());
+            that.locations()[i].marker().setAnimation(null);
 
         }
-        
+
+        place.marker().setAnimation(google.maps.Animation.BOUNCE);
+     
         place.infowindow().open(map, place.marker());
       
         
