@@ -1,7 +1,7 @@
 
       html,
       body {
-        background-color: #536582;
+        background-color: #5fa4d1;
         height: 100%;
         margin: 0;
         padding: 0;
@@ -39,7 +39,7 @@
         padding-top: 20px;
         border-bottom: 2px solid rgb(33, 167, 149);
         cursor: pointer;
-        background-color: #4a8fd1;
+        background-color: #80c1ff;
 	      color: #fff;
       }
       input.searchBar{
